@@ -15,9 +15,67 @@
     }
 
     body {
-      background: #000000;
       height: 100vh;
       overflow: hidden;
+      position: relative;
+      background: #000; /* Fallback color */
+    }
+
+    /* Animated water background */
+    body::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(45deg, #1a2525 0%, #2e3b3e 50%, #1a2525 100%);
+      opacity: 0.8;
+      animation: waterFlow 15s ease-in-out infinite;
+      z-index: -1;
+    }
+
+    /* Shimmer effect overlay */
+    body::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.2) 0%, transparent 70%);
+      opacity: 0.3;
+      animation: shimmer 5s ease-in-out infinite;
+      z-index: -1;
+    }
+
+    /* Water flow animation */
+    @keyframes waterFlow {
+      0% {
+        background-position: 0% 50%;
+      }
+      50% {
+        background-position: 100% 50%;
+      }
+      100% {
+        background-position: 0% 50%;
+      }
+    }
+
+    /* Shimmer animation */
+    @keyframes shimmer {
+      0% {
+        transform: scale(1) translateX(-20%);
+        opacity: 0.2;
+      }
+      50% {
+        transform: scale(1.2) translateX(20%);
+        opacity: 0.4;
+      }
+      100% {
+        transform: scale(1) translateX(-20%);
+        opacity: 0.2;
+      }
     }
 
     /* Font for the logo */
@@ -65,7 +123,7 @@
     /* Header */
     .header {
       position: absolute;
-      top: 3rem; /* Increased from 2rem to create more gap at the top */
+      top: 3rem;
       left: 2rem;
       font-weight: 500;
       pointer-events: auto;
@@ -85,7 +143,7 @@
       letter-spacing: 0.01em;
       text-shadow: 0 2px 4px rgba(0,0,0,0.5);
       position: absolute;
-      bottom: 4rem; /* Increased from 2rem to create more gap at the bottom */
+      bottom: 4rem;
       left: 0;
       right: 0;
       text-align: center;
@@ -96,7 +154,7 @@
     .footer {
       width: 100%;
       position: absolute;
-      bottom: 1rem; /* Added small offset to create gap at the bottom */
+      bottom: 1rem;
       pointer-events: auto;
       display: flex;
       justify-content: center;
@@ -189,8 +247,8 @@
       .coming-soon {
         position: static;
         font-size: 1.875rem;
-        margin-top: 0.5rem; /* Reduced further to create more gap at the top */
-        margin-bottom: 0.25rem; /* Reduced further to create more gap at the bottom */
+        margin-top: 0.5rem;
+        margin-bottom: 0.25rem;
         text-align: center;
       }
 
@@ -215,7 +273,7 @@
 
       .footer {
         padding: 0;
-        bottom: 0.5rem; /* Added small offset for mobile */
+        bottom: 0.5rem;
       }
 
       .footer-content {
@@ -223,7 +281,7 @@
         display: flex;
         flex-direction: column;
         gap: 0.5rem;
-        padding-bottom: 0.5rem; /* Added to create gap at the bottom */
+        padding-bottom: 0.5rem;
       }
     }
 
