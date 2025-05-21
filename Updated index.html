@@ -1,0 +1,387 @@
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests"> <!-- Ensure HTTPS compatibility -->
+  <title>Rarrers - Coming Soon</title>
+  <style>
+    /* Reset and base styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #4285F4 0%, #64A5FF 50%, #00FFCC 100%);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Font for the logo */
+    @font-face {
+      font-family: "SuperSocialSerif";
+      src: local("Times New Roman"), local("Georgia"), local("serif");
+      font-weight: normal;
+      font-style: normal;
+    }
+
+    .font-serif {
+      font-family: "SuperSocialSerif", "Times New Roman", Georgia, serif; /* Added explicit fallbacks */
+    }
+
+    /* Main container */
+    .container {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Sign container */
+    .sign-container {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Text overlay */
+    .text-overlay {
+      position: relative;
+      z-index: 50;
+      width: 100%;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      pointer-events: none;
+    }
+
+    /* Header */
+    .header {
+      position: absolute;
+      top: 2rem;
+      left: 2rem;
+      font-weight: 500;
+      pointer-events: auto;
+    }
+
+    .header p {
+      font-size: 0.875rem;
+      color: white; /* Changed to white per previous preference */
+      letter-spacing: 0.02em;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.5); /* Darker shadow for contrast */
+    }
+
+    /* Coming soon text */
+    .coming-soon {
+      font-size: 5rem;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.5); /* Darker shadow for contrast */
+      position: absolute;
+      bottom: 6rem;
+      left: 0;
+      right: 0;
+      text-align: center;
+      color: white; /* Changed to white per previous preference */
+    }
+
+    /* Footer */
+    .footer {
+      width: 100%;
+      padding: 1.5rem 3rem;
+      margin-top: auto;
+      pointer-events: auto;
+      display: flex;
+      justify-content: center;
+    }
+
+    .footer p {
+      color: white; /* Changed to white per previous preference */
+      letter-spacing: 0.02em;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.5); /* Darker shadow for contrast */
+      font-weight: 500;
+    }
+
+    /* Chupa Chups sign */
+    .chupa-chups-sign {
+      position: relative;
+      will-change: transform;
+      backface-visibility: hidden;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    .sign-circle {
+      width: 20rem;
+      height: 20rem;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(circle at 30% 30%, #F47458, #D95A3E);
+      box-shadow: 
+        10px 10px 25px rgba(0, 0, 0, 0.4), 
+        -5px -5px 20px rgba(255, 255, 255, 0.2), 
+        0 0 8px rgba(0, 0, 0, 0.2);
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      transform: perspective(1000px) rotateX(5deg) rotateY(5deg);
+    }
+
+    .sign-inner {
+      width: 19rem;
+      height: 19rem;
+      border-radius: 50%;
+      background-color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      box-shadow: 
+        inset 0 10px 25px rgba(0, 0, 0, 0.15), 
+        inset 0 -5px 15px rgba(0, 0, 0, 0.1);
+      border: 1px solid rgba(0, 0, 0, 0.05);
+    }
+
+    .sign-text {
+      font-size: 3.75rem;
+      line-height: 1.1;
+      text-align: center;
+    }
+
+    .sign-link {
+      font-size: 0.875rem;
+      text-decoration: underline;
+      margin-top: 0.5rem;
+      color: black;
+    }
+
+    .sign-stick {
+      position: absolute;
+      left: 50%;
+      top: 100%;
+      transform: translateX(-50%);
+      width: 1.25rem;
+      height: 24rem;
+      border-bottom-left-radius: 0.5rem;
+      border-bottom-right-radius: 0.5rem;
+      background: linear-gradient(180deg, #FFFFFF, #F8F8F8);
+      box-shadow:
+        0 20px 40px rgba(0, 0, 0, 0.3), 
+        8px 0 20px rgba(0, 0, 0, 0.2), 
+        -8px 0 20px rgba(0, 0, 0, 0.2), 
+        inset 2px 0 5px rgba(0, 0, 0, 0.2), 
+        inset -2px 0 5px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Mobile styles */
+    @media (max-width: 768px) {
+      .header {
+        display: none;
+      }
+
+      .coming-soon {
+        position: static;
+        font-size: 1.875rem;
+        margin-top: 3rem;
+        margin-bottom: 1rem;
+        text-align: center;
+      }
+
+      .sign-circle {
+        width: 16rem;
+        height: 16rem;
+      }
+
+      .sign-inner {
+        width: 15rem;
+        height: 15rem;
+      }
+
+      .sign-text {
+        font-size: 3rem;
+      }
+
+      .sign-stick {
+        width: 1rem;
+        height: 20rem;
+      }
+
+      .footer {
+        padding: 1.5rem 1rem;
+      }
+
+      .footer-content {
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+    }
+
+    /* Extra small screens */
+    @media (max-width: 375px) {
+      .sign-circle {
+        width: 14rem;
+        height: 14rem;
+      }
+
+      .sign-inner {
+        width: 13rem;
+        height: 13rem;
+      }
+
+      .sign-text {
+        font-size: 2.5rem;
+      }
+
+      .sign-stick {
+        width: 0.75rem;
+        height: 15rem;
+      }
+    }
+
+    /* Floating animation */
+    @keyframes float {
+      0% {
+        transform: translateY(0px);
+      }
+      50% {
+        transform: translateY(-10px);
+      }
+      100% {
+        transform: translateY(0px);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container" id="container">
+    <div class="sign-container">
+      <div class="chupa-chups-sign" id="sign">
+        <div class="sign-circle">
+          <div class="sign-inner">
+            <div class="sign-text font-serif">Rarrers</div>
+            <a href="https://rarrers.com" class="sign-link">rarrers.com</a>
+          </div>
+        </div>
+        <div class="sign-stick"></div>
+      </div>
+    </div>
+
+    <div class="text-overlay">
+      <!-- Header -->
+      <div class="header">
+        <p>© 2025 Rarrers</p>
+        <p>All rights reserved</p>
+      </div>
+
+      <!-- Coming soon text -->
+      <div class="coming-soon" id="coming-soon">Coming Soon</div>
+
+      <!-- Footer -->
+      <footer class="footer">
+        <div class="footer-content" id="footer-content">
+          <p>We're working on something amazing. Stay tuned!</p>
+        </div>
+      </footer>
+    </div>
+  </div>
+
+  <script>
+    // Check if mobile
+    function isMobileDevice() {
+      return window.innerWidth < 768;
+    }
+
+    // Update layout based on screen size
+    function updateLayout() {
+      const isMobile = isMobileDevice();
+      const footerContent = document.getElementById('footer-content');
+      const comingSoon = document.getElementById('coming-soon');
+      
+      if (isMobile) {
+        footerContent.innerHTML = `
+          <p>© 2025 Rarrers. All rights reserved.</p>
+          <p>We're working on something amazing.</p>
+        `;
+      } else {
+        footerContent.innerHTML = `
+          <p>We're working on something amazing. Stay tuned!</p>
+        `;
+      }
+    }
+
+    // Mouse following effect for desktop
+    function setupMouseFollow() {
+      const container = document.getElementById('container');
+      const sign = document.getElementById('sign');
+      
+      if (!isMobileDevice()) {
+        container.addEventListener('mousemove', (e) => {
+          const rect = container.getBoundingClientRect();
+          const x = ((e.clientX - rect.left) / rect.width) * 10 - 5; // -5 to 5
+          const y = ((e.clientY - rect.top) / rect.height) * 10 - 5; // -5 to 5
+          
+          sign.style.transform = `translateX(${x}px) translateY(${y}px)`;
+          sign.style.transition = 'transform 0.2s ease-out';
+        });
+      }
+    }
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', () => {
+      updateLayout();
+      setupMouseFollow();
+      
+      // Update on resize
+      window.addEventListener('resize', updateLayout);
+    });
+  </script>
+</body>
+</html>
