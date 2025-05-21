@@ -1,48 +1,9 @@
-<script type="text/javascript">
-        var gk_isXlsx = false;
-        var gk_xlsxFileLookup = {};
-        var gk_fileData = {};
-        function filledCell(cell) {
-          return cell !== '' && cell != null;
-        }
-        function loadFileData(filename) {
-        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
-            try {
-                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
-                var firstSheetName = workbook.SheetNames[0];
-                var worksheet = workbook.Sheets[firstSheetName];
-
-                // Convert sheet to JSON to filter blank rows
-                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
-                // Filter out blank rows (rows where all cells are empty, null, or undefined)
-                var filteredData = jsonData.filter(row => row.some(filledCell));
-
-                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
-                var headerRowIndex = filteredData.findIndex((row, index) =>
-                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
-                );
-                // Fallback
-                if (headerRowIndex === -1 || headerRowIndex > 25) {
-                  headerRowIndex = 0;
-                }
-
-                // Convert filtered JSON back to CSV
-                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
-                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
-                return csv;
-            } catch (e) {
-                console.error(e);
-                return "";
-            }
-        }
-        return gk_fileData[filename] || "";
-        }
-        </script><!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests"> <!-- Ensure HTTPS compatibility -->
+  <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
   <title>Rarrers - Coming Soon</title>
   <style>
     /* Reset and base styles */
@@ -54,9 +15,9 @@
     }
 
     body {
-      background: linear-gradient(135deg, #4285F4 0%, #64A5FF 50%, #00FFCC 100%);
-      min-height: 100vh;
-      overflow-x: hidden;
+      background: #000000; /* Changed to solid black for epic look */
+      height: 100vh; /* Ensure body fits viewport */
+      overflow: hidden; /* Prevent any scroll */
     }
 
     /* Font for the logo */
@@ -68,12 +29,12 @@
     }
 
     .font-serif {
-      font-family: "SuperSocialSerif", "Times New Roman", Georgia, serif; /* Added explicit fallbacks */
+      font-family: "SuperSocialSerif", "Times New Roman", Georgia, serif;
     }
 
     /* Main container */
     .container {
-      min-height: 100vh;
+      height: 100vh; /* Exact height to fit viewport */
       display: flex;
       flex-direction: column;
       position: relative;
@@ -95,7 +56,7 @@
       position: relative;
       z-index: 50;
       width: 100%;
-      min-height: 100vh;
+      height: 100vh; /* Match container height */
       display: flex;
       flex-direction: column;
       pointer-events: none;
@@ -112,9 +73,9 @@
 
     .header p {
       font-size: 0.875rem;
-      color: white; /* Changed to white per previous preference */
+      color: white;
       letter-spacing: 0.02em;
-      text-shadow: 0 1px 2px rgba(0,0,0,0.5); /* Darker shadow for contrast */
+      text-shadow: 0 1px 2px rgba(0,0,0,0.5);
     }
 
     /* Coming soon text */
@@ -122,29 +83,29 @@
       font-size: 5rem;
       font-weight: 700;
       letter-spacing: 0.01em;
-      text-shadow: 0 2px 4px rgba(0,0,0,0.5); /* Darker shadow for contrast */
+      text-shadow: 0 2px 4px rgba(0,0,0,0.5);
       position: absolute;
-      bottom: 6rem;
+      bottom: 2rem; /* Reduced to fit within viewport */
       left: 0;
       right: 0;
       text-align: center;
-      color: white; /* Changed to white per previous preference */
+      color: white;
     }
 
     /* Footer */
     .footer {
       width: 100%;
-      padding: 1.5rem 3rem;
-      margin-top: auto;
+      position: absolute; /* Position at bottom */
+      bottom: 0;
       pointer-events: auto;
       display: flex;
       justify-content: center;
     }
 
     .footer p {
-      color: white; /* Changed to white per previous preference */
+      color: white;
       letter-spacing: 0.02em;
-      text-shadow: 0 1px 2px rgba(0,0,0,0.5); /* Darker shadow for contrast */
+      text-shadow: 0 1px 2px rgba(0,0,0,0.5);
       font-weight: 500;
     }
 
@@ -228,8 +189,8 @@
       .coming-soon {
         position: static;
         font-size: 1.875rem;
-        margin-top: 3rem;
-        margin-bottom: 1rem;
+        margin-top: 1rem; /* Reduced to fit within viewport */
+        margin-bottom: 0.5rem; /* Reduced to fit within viewport */
         text-align: center;
       }
 
@@ -253,7 +214,7 @@
       }
 
       .footer {
-        padding: 1.5rem 1rem;
+        padding: 0; /* Removed padding */
       }
 
       .footer-content {
