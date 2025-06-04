@@ -37,7 +37,7 @@
       left: 50%;
       transform: translateX(-50%);
     }
-    @media (max-width: 640px) {
+    @media (max-width: 768px) {
       .slideshow-container {
         width: 250px;
         height: 375px;
@@ -65,12 +65,16 @@
         margin-bottom: 1rem;
       }
     }
-    @media (min-width: 641px) {
+    @media (min-width: 769px) {
       .text-top {
         display: none !important;
       }
       .text-side {
         display: block !important;
+      }
+      .hero-section {
+        flex-direction: row !important;
+        align-items: start !important;
       }
     }
   </style>
