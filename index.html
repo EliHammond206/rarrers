@@ -147,10 +147,16 @@
     .new-tag {
       background-color: red;
       color: white;
-      font-size: 0.625rem; /* Smaller font for the tag */
+      font-size: 0.625rem;
       padding: 0.125rem 0.25rem;
       border-radius: 0.25rem;
       margin-left: 0.25rem;
+    }
+    .ad-text-large {
+      display: inline;
+    }
+    .ad-text-small {
+      display: none;
     }
     @media (max-width: 767px) {
       .slideshow-container {
@@ -256,15 +262,18 @@
         overflow: hidden;
         text-overflow: ellipsis;
       }
-      header a span.ad-text::before {
-        content: "Ads "; /* Change to "Ads New" on small screens */
-      }
       header button {
         font-size: 0.75rem;
         padding-left: 0.5rem;
         padding-right: 0.5rem;
         padding-top: 0.5rem;
         padding-bottom: 0.5rem;
+      }
+      .ad-text-large {
+        display: none;
+      }
+      .ad-text-small {
+        display: inline;
       }
     }
   </style>
@@ -275,7 +284,8 @@
     <h1 class="text-2xl font-bold">Rustless</h1>
     <div class="flex items-center space-x-3">
       <a href="#" class="text-white text-sm align-middle">
-        <span class="ad-text">Advertise with Rustless</span>
+        <span class="ad-text-large">Advertise with Rustless</span>
+        <span class="ad-text-small">Ads</span>
         <span class="new-tag">New</span>
       </a>
       <button class="bg-white text-black px-4 py-2 rounded-full text-sm align-middle">Get The App</button>
