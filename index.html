@@ -14,8 +14,8 @@
     }
     .slideshow-container {
       position: relative;
-      width: 525px; /* BeReal size */
-      height: 390px; /* BeReal size */
+      width: 525px;
+      height: 390px;
       box-shadow: 0 0 20px 35px rgba(0, 0, 0, 0.5);
       z-index: 3;
     }
@@ -31,7 +31,7 @@
       background-position: center;
       display: flex;
       align-items: flex-start;
-      padding: 0.75rem; /* 12px to match BeReal distance */
+      padding: 0.75rem;
     }
     .slide.active {
       opacity: 1;
@@ -60,8 +60,8 @@
     }
     .post-inset-wrapper {
       position: relative;
-      width: 121px; /* BeReal size (120px + 0.5px border) */
-      height: 161px; /* BeReal size (160px + 0.5px border) */
+      width: 121px;
+      height: 161px;
       border: 0.5px solid black;
       border-radius: 0.75rem;
       display: flex;
@@ -70,8 +70,8 @@
     }
     .post-inset {
       position: relative;
-      width: 120px; /* BeReal size */
-      height: 160px; /* BeReal size */
+      width: 120px;
+      height: 160px;
       border-radius: 0.65rem;
       overflow: hidden;
       background-size: cover;
@@ -146,8 +146,8 @@
     }
     @media (max-width: 767px) {
       .slideshow-container {
-        width: 455px; /* Adjusted to maintain 525:390 ratio */
-        height: 338px; /* Adjusted to maintain 525:390 ratio */
+        width: 455px;
+        height: 338px;
         box-shadow: 0 0 15px 25px rgba(0, 0, 0, 0.5);
       }
       .overlay-button {
@@ -180,12 +180,12 @@
         height: 250px;
       }
       .post-inset-wrapper {
-        width: 105px; /* Adjusted to maintain 120:160 ratio (104px + 0.5px border) */
-        height: 139px; /* Adjusted to maintain 120:160 ratio (138px + 0.5px border) */
+        width: 105px;
+        height: 139px;
       }
       .post-inset {
-        width: 104px; /* Adjusted to maintain 120:160 ratio */
-        height: 138px; /* Adjusted to maintain 120:160 ratio */
+        width: 104px;
+        height: 138px;
         border-radius: 0.55rem;
       }
       .post-text p {
@@ -228,6 +228,32 @@
       }
       .hero-section {
         gap: 1.5rem;
+      }
+    }
+    @media (max-width: 375px) {
+      header {
+        padding: 0.5rem; /* p-2, reduced padding */
+        flex-wrap: nowrap; /* Prevent wrapping */
+      }
+      header h1 {
+        font-size: 1.25rem; /* text-xl, 20px */
+      }
+      header .flex {
+        gap: 0.5rem; /* space-x-2, 8px */
+        max-width: 200px; /* Prevent overflow */
+      }
+      header a {
+        font-size: 0.75rem; /* text-xs, 12px */
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      header button {
+        font-size: 0.75rem; /* text-xs, 12px */
+        padding-left: 0.5rem; /* px-2, 8px */
+        padding-right: 0.5rem; /* px-2, 8px */
+        padding-top: 0.5rem; /* py-2, 8px */
+        padding-bottom: 0.5rem; /* py-2, 8px */
       }
     }
   </style>
