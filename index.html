@@ -232,28 +232,40 @@
     }
     @media (max-width: 375px) {
       header {
-        padding: 0.5rem; /* p-2, reduced padding */
-        flex-wrap: nowrap; /* Prevent wrapping */
+        padding: 0.5rem;
+        flex-wrap: nowrap;
       }
       header h1 {
-        font-size: 1.25rem; /* text-xl, 20px */
+        font-size: 1.25rem;
       }
       header .flex {
-        gap: 0.5rem; /* space-x-2, 8px */
-        max-width: 200px; /* Prevent overflow */
+        gap: 0.5rem;
+        max-width: 200px;
       }
       header a {
-        font-size: 0.75rem; /* text-xs, 12px */
+        font-size: 0.75rem;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
       }
+      header a span {
+        font-size: 0.625rem; /* Smaller for NEW tag */
+        padding: 0.125rem 0.25rem;
+        background-color: red;
+        color: white;
+        border-radius: 0.25rem;
+        margin-left: 0.25rem;
+      }
       header button {
+        font-size: 0.75rem;
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
+        padding-top: 0.5rem;
+        padding-bottom: 0.5rem;
+      }
+      footer {
+        gap: 0.5rem; /* space-x-2, 8px */
         font-size: 0.75rem; /* text-xs, 12px */
-        padding-left: 0.5rem; /* px-2, 8px */
-        padding-right: 0.5rem; /* px-2, 8px */
-        padding-top: 0.5rem; /* py-2, 8px */
-        padding-bottom: 0.5rem; /* py-2, 8px */
       }
     }
   </style>
@@ -263,8 +275,8 @@
   <header class="flex justify-between items-center p-4">
     <h1 class="text-2xl font-bold">Rustless</h1>
     <div class="flex items-center space-x-3">
-      <a href="#" class="text-white text-sm align-middle">Advertise with Rustless</a>
-      <button class="bg-white text-black px-4 py-2 rounded-full text-sm align-middle">Get The App</button>
+      <a href="#" class="text-white text-sm align-middle">ADS<span>NEW</span></a>
+      <button class="bg-white text-black px-4 py-2 rounded-full text-sm align-middle">Get App</button>
     </div>
   </header>
 
@@ -346,9 +358,6 @@
       </h2>
     </div>
   </main>
-
-  <!-- Subtle Gradient Overlay -->
-  <div class="blur-gradient"></div>
 
   <!-- Footer -->
   <footer class="flex flex-wrap justify-center items-center p-4 text-sm space-x-4 relative z-10">
